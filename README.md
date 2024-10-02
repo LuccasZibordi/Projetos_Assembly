@@ -51,6 +51,9 @@ Utiização de laços no programa para realizar funções distintas para cada pr
 Laboratório 6- Loop para ler diversos caracteres
 Projeto focado na criação de um simples laço que possui uma comparação como critério de parada
 
+Laboratório 7- Multiplicando e Dividindo
+Criação de um loop sucessivo de adições em um laço para realizar uma multiplicação e um loop de sucessivas subtrações em um laço para realizar uma divisão
+
 
 ### Contatos ###
 Email: luccaszibordi@gmail.com
