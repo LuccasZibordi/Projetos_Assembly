@@ -54,6 +54,9 @@ Projeto focado na criação de um simples laço que possui uma comparação como
 Laboratório 7- Multiplicando e Dividindo
 Criação de um loop sucessivo de adições em um laço para realizar uma multiplicação e um loop de sucessivas subtrações em um laço para realizar uma divisão
 
+Laboratório 8- Números binários e hexadecimais
+Utilização de novos conhecimentos para criar uma leitura e impressão de números Binários e Hexadecimais.
+
 
 ### Contatos ###
 Email: luccaszibordi@gmail.com
