@@ -57,6 +57,9 @@ Criação de um loop sucessivo de adições em um laço para realizar uma multip
 Laboratório 8- Números binários e hexadecimais
 Utilização de novos conhecimentos para criar uma leitura e impressão de números Binários e Hexadecimais.
 
+Laboratório 9- Manipulação de vetor
+Uma simple manipulação de vetores que envolvem leitura, inversão e impressão de um vetor de 7 posições
+
 
 ### Contatos ###
 Email: luccaszibordi@gmail.com
