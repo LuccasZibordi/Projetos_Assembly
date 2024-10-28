@@ -1,3 +1,4 @@
+TITLE imprime binário
 .MODEL SMALL
 .STACK 100H
 .DATA
