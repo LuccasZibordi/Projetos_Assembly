@@ -3,7 +3,7 @@ TITLE Quantas letras a tem
 .stack 100h
 .data 
     vetor db 20 dup (0)
-    msg db 13,10,"Digite um numero do vetor: $"
+    msg db 13,10,"Digite uma palabra de ate 20 letras: $"
     msg_saida db 13,10, "A quantidade de (A) no vetor eh: $"
 .code
 main proc
