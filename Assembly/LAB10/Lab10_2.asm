@@ -73,7 +73,7 @@ imprimematriz PROC
     MOV AH, 09H
     INT 21H
 
-    mov bx, 0             ; Índice de linha
+    xor bx,bx             ; Índice de linha
     mov cx, 4    ; Contador de linhas
 imprime_linha:
     push cx               ; Salva o contador de linhas
