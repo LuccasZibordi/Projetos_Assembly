@@ -1,13 +1,10 @@
-;Julia Gomes     RA:20052387
-;Rafael Dorta    RA:20032256
-;Rafaela Medina  RA:20014346$'
 
 TITLE Projeto_Final
 .MODEL SMALL
 .STACK 100h
 .DATA 
-    TABULEIRO1 DB 6 DUP(6 DUP ('0'))
-    TABULEIRO2 DB 6 DUP(6 DUP ('0'))
+    TABULEIRO1 DB 20 DUP(20 DUP ('0'))
+    TABULEIRO2 DB 20 DUP(20 DUP ('0'))
     INFOS DB 00,'0','0',00,'0','0' 
     TIROS1 DB 36
     TIROS2 DB 36
@@ -21,7 +18,7 @@ TITLE Projeto_Final
     TRACINHOS DB '  +---+---+---+---+---+---+ $'
     LINHA DB 13,10,'$'
     LETRA_NUMERO DB 2 DUP (?)
-    MSG1 DB 10,13,'BEM VINDO AO BATALHA NAVAL',10,13,'Desenvolvido por: Julia Gomes     RA:20052387',10,13,'                  Rafael Dorta    RA:20032256',10,13,'                  Rafaela Medina  RA:20014346$'
+    MSG1 DB 10,13,'Seja bem vindo ao simulador de Bataha Naval!',10,13,'Desenvolvido por: Luccas Gomes Zibordi RA:40007138'
     MSG2 DB 10,13,10,13,'Aperte <enter> para continuar... $'
     MSG3 DB 10,13,'JOGADOR 1 $'
     MSG4 DB 10,13,'Digite seu nome: $'
