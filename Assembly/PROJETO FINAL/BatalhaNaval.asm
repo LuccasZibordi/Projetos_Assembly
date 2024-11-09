@@ -9,33 +9,39 @@ TITLE Batalha Naval
     Fragata db 1     ; 3 células consecutivas (1 linha e 3 colunas)
     Submarino db 2   ; 2 células consecutivas (1 linha e 2 colunas)
     Hidroaviao db 2  ; 4 células posicionadas (3 linhas e 2 colunas)
-    Torpedos db 36
+    Torpedos db 33
 
     ;MENSAGENS:
     msg db 10,13, 'BEM VINDO AO SIMULADOR DE BATALHA NAVAL!', 10,13, 'Desenvolvido por: Luccas Gomes Zibordi      RA: 24007138 ',10,13,10,13,'   Aperte <enter> para continuar!$'
     msg2 db 10,13,'Posicionando embarcacoes... ... ... ...$'
+    msg3 db 10,13,'Escolha um mapa para jogar (digite um numero entre 0 - 9): $'
+    msg4 db 10,13,'Escollha uma posicao para atirar (linha): $'
+    msg5 db 10,13,'Escollha uma posicao para atirar (coluna): $'
+    msg6 db 10,13,'Numero de tiros restantes: $'
+    msg7 db 10,13,'Acertou!$'
+    msg8 db 10,13,'Agua!$'
 
-    MatrizAmostra db '   0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19',10,13
-                  db 'A  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'B  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'C  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'D  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'E  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'F  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'G  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'H  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'I  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                ;matriz mostrada para o usuário
-                  db 'J  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'K  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'L  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'M  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'N  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'O  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'P  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'Q  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'R  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'S  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
-                  db 'T  . . . . . . . . . . . . . . . . . . . . . . . . .$ ',10,13                
+    MatrizAmostra db '    0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19',10,13
+                  db '0   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '1   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '2   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '3   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '4   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '5   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '6   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '7   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '8   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                ;matriz mostrada para o usuário
+                  db '9   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '10  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '11  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '12  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '13  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '14  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '15  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '16  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '17  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '18  . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
+                  db '19  . . . . . . . . . . . . . . . . . . . . . . . . . $',10,13                
 
     ;MACROS:
     LIMPA_TELA MACRO
@@ -51,6 +57,33 @@ TITLE Batalha Naval
     MOV AH,02H
     MOV DL,13
     INT 21H
+    ENDM
+
+QTDTIROS MACRO
+    ; Exibe a mensagem do número de tiros restantes
+    MOV AH,09h
+    LEA DX, msg6
+    INT 21H
+
+    ; Converte o valor de Torpedos para ASCII e exibe
+    MOV AL, Torpedos   ; Carrega o valor de Torpedos em AL
+    AAM                ; Divide AL em dígitos (resultado em AH e AL)
+    ADD AH, '0'        ; Converte o dígito das dezenas para ASCII
+    ADD AL, '0'        ; Converte o dígito das unidades para ASCII
+    
+    ; Exibe o dígito das dezenas (se for maior que zero)
+    CMP AH, '0'
+    JE skip_tens
+    MOV DL, AH
+    MOV AH, 02h
+    INT 21H
+skip_tens:
+    
+    ; Exibe o dígito das unidades
+    MOV DL, AL
+    MOV AH, 02h
+    INT 21H
+
     ENDM
     
 .code
@@ -72,8 +105,9 @@ main PROC
 
 inicio:
 LIMPA_TELA
-call mostrarmatriz
+call mostrarMatriz
 call addEmbarcacoes
+call tiros
 
 fim:
 mov ah,4ch
@@ -81,99 +115,174 @@ int 21h
 
 main ENDP
 
-mostrarmatriz proc
+mostrarMatriz proc
 mov ah,09H
 lea dx,MatrizAmostra
 int 21H
 ret
-mostrarmatriz endp
+mostrarMatriz endp
 
-addEmbarcacoes proc
+selecionarMapa proc
     PULA_LINHA
-    mov ah,09H
-    lea dx, msg2
+    ; Pergunta ao usuário qual mapa escolher
+    mov ah, 09h
+    lea dx, msg3
     int 21h
 
-    ; Inicializa as variáveis de linha e coluna
-    xor di,di
-    xor bx,bx
-    
-    ; Posiciona o encouraçado (4 células consecutivas na horizontal)
-    mov cx, 4
-    mov bx, 6    ; Linha inicial
-    mov di, 4    ; Coluna inicial
-encouracado:
-    ; Verifica se está dentro dos limites da matriz (20x20)
-    cmp di, 20
-    jae proximo_navio
-    cmp bx, 20
-    jae proximo_navio
+    ; Lê o valor do usuário
+    mov ah, 01h
+    int 21h
+    and al, 0fh ; Converte o valor digitado para número (0-9)
+    xor dh,dh
+    mov dl, al  ; Armazena o valor digitado em BL
+    ret
+selecionarMapa endp
 
-    ; Posiciona uma parte do encouraçado
-    mov matriz[bx * 20 + di], 1
+addEmbarcacoes proc
+    call selecionarMapa
+
+    mov ah,09H
+    lea dx, msg2
+    int 21H
+
+; Preparação para posicionar o Encouraçado (1 linha e 4 colunas)
+    mov bx,2
+    mov di,5
+    add bx,dx
+    add di,dx
+    mov cx, 4
+
+encouracado:
+    mov Matriz[bx][di],1
     inc di
     loop encouracado
 
-proximo_navio:
-    ; Posiciona a fragata (3 células consecutivas na horizontal)
+; Preparação para posicionar o Fragata (1 linha e 3 colunas)
+    mov bx,4
+    mov di,6
+    add bx,dx
+    add di,dx
     mov cx, 3
-    add bx, 4   ; Define nova linha para a fragata
-    mov di, 8   ; Coluna inicial
-frag:
-    ; Verifica se está dentro dos limites da matriz (20x20)
-    cmp di, 20
-    jae subm
-    cmp bx, 20
-    jae subm
 
-    ; Posiciona uma parte da fragata
-    mov matriz[bx * 20 + di], 1
+frag:
+    mov Matriz[bx][di],1
     inc di
     loop frag
 
-subm:
-    ; Posiciona o submarino (2 células consecutivas na horizontal)
+; Preparação para posiionar o Submarino (1 linha e 2 colunas)
+    mov bx,6
+    mov di,4
+    add bx,dx
+    add di,dx
     mov cx, 2
-    add bx, 4   ; Define nova linha para o submarino
-    mov di, 12  ; Coluna inicial
-submarino:
-    ; Verifica se está dentro dos limites da matriz (20x20)
-    cmp di, 20
-    jae aviao
-    cmp bx, 20
-    jae aviao
 
-    ; Posiciona uma parte do submarino
-    mov matriz[bx * 20 + di], 1
+repete_sub:
+    push cx
+    mov cx,2
+
+subm:
+    mov Matriz[bx][di],1
     inc di
-    loop submarino
+    loop subm
 
-aviao:
-    ; Posiciona o hidroavião em formato "L"
-    mov bx, 14  ; Linha inicial
-    mov di, 4   ; Coluna inicial
-    ; Verifica se está dentro dos limites da matriz (20x20)
-    cmp di, 20
-    jae fim
-    cmp bx, 20
-    jae fim
+verifica_repete:
+    pop cx
 
-    ; Parte horizontal do hidroavião
-    mov matriz[bx * 20 + di], 1
-    inc di
-    mov matriz[bx * 20 + di], 1
+segunda_rep:
+    sub bx,dx
+    sub di,dx
 
-    ; Parte vertical do hidroavião
+    loop repete_sub
+
+; Preparação para posiionar o Submarino (1 linha e 2 colunas) 
+    mov bx,8
+    mov di,2
+    add bx,dx
+    add di,dx
+    mov cx, 2
+repete_hidro:
+    push cx
+    mov cx,3
+
+hidro_horizontal:
+    mov Matriz[bx][di],1
     inc bx
-    cmp bx, 20
-    jae FINAL
-    mov matriz[bx * 20 + di - 1], 1  ; Coloca na mesma coluna da primeira parte
+    loop hidro_horizontal
 
-FINAL:
+hidro_vertical:
+    dec bx
+    inc di
+    mov Matriz[bx][di],1
+
+verifica_rep:
+    pop cx
+    
+segunda_repet:
+    sub bx,dx
+    sub di,dx
+
+    loop repete_hidro 
+
     ret
 addEmbarcacoes endp
 
+tiros proc
+PULA_LINHA
+QTDTIROS
+    
+linha:
+    mov ah,09H
+    lea dx, msg4
+    int 21h
+    call ler_posicao
+    xor bh,bh
+    
+coluna:
+    mov ah,09H
+    lea dx, msg5
+    int 21h
+    call ler_posicao
+    xor bh,bh
+    mov bx,di
 
+    ; Verifica se acertou uma embarcação
+    cmp matriz[bx][di], 1
+    je acertou
+
+agua:
+    mov ah, 09h
+    lea dx, msg8
+    int 21h
+    jmp fim_tiro
+
+acertou:
+    mov ah, 09h
+    lea dx, msg8
+    int 21h
+    mov matriz[bx][di], 0  ; Marca a posição como destruída
+
+fim_tiro:
+    ret
+
+ret
+tiros endp
+
+ler_posicao proc
+    ; Lê o primeiro caractere (parte das dezenas)
+leitura:
+    mov ah, 01h        ; Função para ler caractere do teclado
+    int 21h            ; Lê o primeiro dígito
+    and al,0fh        ; Converte o caractere ASCII para valor numérico
+    mov bl, al         ; Armazena o valor em BL (parte das dezenas)
+    cmp bl,13
+    je fim_leitura
+    mov ax, 10
+    mul bl             ; Multiplica o valor por 10, resultado em AX
+    jmp leitura
+
+fim_leitura:
+    ret
+ler_posicao endp
 
 
 end main
