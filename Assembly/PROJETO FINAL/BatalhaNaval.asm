@@ -90,6 +90,7 @@ skip_tens:
 
 
 main PROC
+    LIMPA_TELA
     
     mov ax,@data
     mov ds,ax
@@ -227,26 +228,31 @@ segunda_repet:
 addEmbarcacoes endp
 
 tiros proc
-PULA_LINHA
-QTDTIROS
-    
+    PULA_LINHA
+    QTDTIROS
+
 linha:
     mov ah,09H
     lea dx, msg4
     int 21h
     call ler_posicao
-    xor bh,bh
-    
+    mov bh, al  ; Armazena a linha em BH
+
 coluna:
     mov ah,09H
     lea dx, msg5
     int 21h
     call ler_posicao
-    xor bh,bh
-    mov bx,di
+    mov bl, al  ; Armazena a coluna em BL
+
+    ; Calcula o offset na matriz
+    mov ax, 20
+    mul bh       ; AX = linha * 20
+    add al, bl    ; AL = (linha * 20) + coluna
+    mov si, ax    ; SI = offset na matriz
 
     ; Verifica se acertou uma embarcação
-    cmp matriz[bx][di], 1
+    cmp matriz[si], 1
     je acertou
 
 agua:
@@ -257,33 +263,33 @@ agua:
 
 acertou:
     mov ah, 09h
-    lea dx, msg8
+    lea dx, msg7
     int 21h
-    mov matriz[bx][di], 0  ; Marca a posição como destruída
+    mov matriz[si], 0 ; Marca a posição como destruída
 
 fim_tiro:
     ret
-
-ret
 tiros endp
 
 ler_posicao proc
-    ; Lê o primeiro caractere (parte das dezenas)
-leitura:
-    mov ah, 01h        ; Função para ler caractere do teclado
-    int 21h            ; Lê o primeiro dígito
-    and al,0fh        ; Converte o caractere ASCII para valor numérico
-    mov bl, al         ; Armazena o valor em BL (parte das dezenas)
-    cmp bl,13
-    je fim_leitura
-    mov ax, 10
-    mul bl             ; Multiplica o valor por 10, resultado em AX
-    jmp leitura
+    ; Lê o primeiro dígito (dezena)
+    MOV AH, 01h
+    INT 21h
+    SUB AL, 30h    ; Converter ASCII para numérico
+    mov bl, 10
+    mul bl          ; Multiplicar por 10 para obter o valor da dezena
+    mov bh, al     ; Armazenar a dezena em BH
 
-fim_leitura:
+    ; Lê o segundo dígito (unidade)
+    MOV AH, 01h
+    INT 21h
+    SUB AL, 30h    ; Converter ASCII para numérico
+    add bh, al     ; Somar a unidade ao valor da dezena
+
+    mov al, bh     ; Retorna o valor total em AL
+
     ret
 ler_posicao endp
-
 
 end main
 ; minha ideia é que cada posição ocupada por uma das embarcações possua o valor '1' assim como os misseis. Ao ser acertado o pedaço da embarcação atingido terá seu valor(1) subtraido pelo valor do missel(1) resultando em 0, retornando para o valor original da posição da matriz
