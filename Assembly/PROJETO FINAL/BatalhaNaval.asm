@@ -10,6 +10,7 @@ TITLE Batalha Naval
     Submarino db 2   ; 2 células consecutivas (1 linha e 2 colunas)
     Hidroaviao db 2  ; 4 células posicionadas (3 linhas e 2 colunas)
     Torpedos db 33
+    EmbarcacoesRestantes db 19 ; Total de partes de embarcações no jogo
 
     ;MENSAGENS:
     msg db 10,13, 'BEM VINDO AO SIMULADOR DE BATALHA NAVAL!', 10,13, 'Desenvolvido por: Luccas Gomes Zibordi      RA: 24007138 ',10,13,10,13,'   Aperte <enter> para continuar!$'
@@ -17,9 +18,11 @@ TITLE Batalha Naval
     msg3 db 10,13,'Escolha um mapa para jogar (digite um numero entre 0 - 9): $'
     msg4 db 10,13,'Escollha uma posicao para atirar (linha): $'
     msg5 db 10,13,'Escollha uma posicao para atirar (coluna): $'
-    msg6 db 10,13,'Numero de tiros restantes: $'
-    msg7 db 10,13,'Acertou!$'
-    msg8 db 10,13,'Agua!$'
+    msg6 db 10,13,'Numero maximo de tiros: 33$'
+    msg7 db 10,13,'Numero de tiros dados: $'
+    msg8 db 10,13,'Acertou!$'
+    msg9 db 10,13,'Agua!$'
+    msg10 db 10,13,'Parabens! Voce destruiu todas as embarcacoes e venceu o jogo!$'
 
     MatrizAmostra db '    0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19',10,13
                   db '0   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
@@ -65,23 +68,12 @@ QTDTIROS MACRO
     LEA DX, msg6
     INT 21H
 
-    ; Converte o valor de Torpedos para ASCII e exibe
-    MOV AL, Torpedos   ; Carrega o valor de Torpedos em AL
-    AAM                ; Divide AL em dígitos (resultado em AH e AL)
-    ADD AH, '0'        ; Converte o dígito das dezenas para ASCII
-    ADD AL, '0'        ; Converte o dígito das unidades para ASCII
-    
-    ; Exibe o dígito das dezenas (se for maior que zero)
-    CMP AH, '0'
-    JE skip_tens
-    MOV DL, AH
-    MOV AH, 02h
+    MOV AH,09h
+    LEA DX, msg7
     INT 21H
-skip_tens:
-    
-    ; Exibe o dígito das unidades
-    MOV DL, AL
-    MOV AH, 02h
+
+    MOV AH,02H
+    ADD DL,'0'
     INT 21H
 
     ENDM
@@ -228,31 +220,28 @@ segunda_repet:
 addEmbarcacoes endp
 
 tiros proc
+    mov cx,33
+    xor dx,dx
+comeco:
     PULA_LINHA
     QTDTIROS
+    push dx
 
 linha:
     mov ah,09H
     lea dx, msg4
     int 21h
     call ler_posicao
-    mov bh, al  ; Armazena a linha em BH
+    
 
 coluna:
     mov ah,09H
     lea dx, msg5
     int 21h
     call ler_posicao
-    mov bl, al  ; Armazena a coluna em BL
-
-    ; Calcula o offset na matriz
-    mov ax, 20
-    mul bh       ; AX = linha * 20
-    add al, bl    ; AL = (linha * 20) + coluna
-    mov si, ax    ; SI = offset na matriz
-
+    mov di,bx
     ; Verifica se acertou uma embarcação
-    cmp matriz[si], 1
+    cmp matriz[bx][di], 1
     je acertou
 
 agua:
@@ -266,30 +255,32 @@ acertou:
     lea dx, msg7
     int 21h
     mov matriz[si], 0 ; Marca a posição como destruída
+   dec embarcacoesRestantes ; Decrementa o contador de partes de embarcações restantes
+
+    ; Verifica se todas as embarcações foram destruídas
+    cmp embarcacoesRestantes, 0
+    je vitoria
 
 fim_tiro:
+    loop comeco
     ret
+
+vitoria:
+    mov ah, 09h
+    lea dx, msg10
+    int 21h
+    jmp fim
+
 tiros endp
 
 ler_posicao proc
     ; Lê o primeiro dígito (dezena)
     MOV AH, 01h
     INT 21h
-    SUB AL, 30h    ; Converter ASCII para numérico
-    mov bl, 10
-    mul bl          ; Multiplicar por 10 para obter o valor da dezena
-    mov bh, al     ; Armazenar a dezena em BH
-
-    ; Lê o segundo dígito (unidade)
-    MOV AH, 01h
-    INT 21h
-    SUB AL, 30h    ; Converter ASCII para numérico
-    add bh, al     ; Somar a unidade ao valor da dezena
-
-    mov al, bh     ; Retorna o valor total em AL
-
+    AND AL,0FH  ; Converter ASCII para numérico
+    xor ah,ah
+    mov bx,ax
     ret
 ler_posicao endp
 
 end main
-; minha ideia é que cada posição ocupada por uma das embarcações possua o valor '1' assim como os misseis. Ao ser acertado o pedaço da embarcação atingido terá seu valor(1) subtraido pelo valor do missel(1) resultando em 0, retornando para o valor original da posição da matriz
