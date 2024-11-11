@@ -5,16 +5,12 @@ TITLE Batalha Naval
     ;VARIAVEIS:
     matriz db 10 dup(10 dup(0)) ;matriz principal
 
-    Encouraçado db 1 ; 4 células consecutivas (1 linha e 4 colunas)
-    Fragata db 1     ; 3 células consecutivas (1 linha e 3 colunas)
-    Submarino db 2   ; 2 células consecutivas (1 linha e 2 colunas)
-    Hidroaviao db 2  ; 4 células posicionadas (3 linhas e 2 colunas)
     EmbarcacoesRestantes db 19 ; Total de partes de embarcações no jogo
 
     ;MENSAGENS:
     msg db 10,13, 'BEM VINDO AO SIMULADOR DE BATALHA NAVAL!', 10,13, 'Desenvolvido por: Luccas Gomes Zibordi      RA: 24007138 ',10,13,10,13,'   Aperte <enter> para continuar!$'
     msg2 db 10,13,'Posicionando embarcacoes... ... ... ...$'
-    msg3 db 10,13,'Escolha um mapa para jogar (digite um numero entre 0 - 9): $'
+    msg3 db 10,13,'Escolha um mapa para jogar (digite um numero entre 0 - 5): $'
     msg4 db 10,13,'Escollha uma posicao para atirar (linha): $'
     msg5 db 10,13,'Escollha uma posicao para atirar (coluna): $'
     msg6 db 10,13,'Acertou!$'
@@ -110,7 +106,7 @@ addEmbarcacoes proc
 
 ; Preparação para posicionar o Encouraçado (1 linha e 4 colunas)
     mov bx,2
-    mov di,5
+    mov di,4
     add bx,dx
     add di,dx
     mov cx, 4
@@ -122,7 +118,7 @@ encouracado:
 
 ; Preparação para posicionar o Fragata (1 linha e 3 colunas)
     mov bx,4
-    mov di,6
+    mov di,3
     add bx,dx
     add di,dx
     mov cx, 3
@@ -133,7 +129,7 @@ frag:
     loop frag
 
 ; Preparação para posiionar o Submarino (1 linha e 2 colunas)
-    mov bx,6
+    mov bx,2
     mov di,4
     add bx,dx
     add di,dx
@@ -157,12 +153,13 @@ segunda_rep:
 
     loop repete_sub
 
-; Preparação para posiionar o Submarino (1 linha e 2 colunas) 
-    mov bx,8
+; Preparação para posiionar o Hidroavião (3 linhas e 1 coluna)
+    mov bx,3
     mov di,2
     add bx,dx
     add di,dx
     mov cx, 2
+
 repete_hidro:
     push cx
     mov cx,3
@@ -179,7 +176,7 @@ hidro_vertical:
 
 verifica_rep:
     pop cx
-    
+
 segunda_repet:
     sub bx,dx
     sub di,dx
@@ -190,7 +187,6 @@ segunda_repet:
 addEmbarcacoes endp
 
 tiros proc
-    mov cx,33
     xor dx,dx
 comeco:
     PULA_LINHA
@@ -231,10 +227,11 @@ acertou:
     je vitoria
 
 fim_tiro:
-    loop comeco
+    jmp comeco
     ret
 
 vitoria:
+    LIMPA_TELA
     mov ah, 09h
     lea dx, msg8
     int 21h
