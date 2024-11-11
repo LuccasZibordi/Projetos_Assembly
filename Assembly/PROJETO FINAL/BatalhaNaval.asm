@@ -3,13 +3,12 @@ TITLE Batalha Naval
 .stack 100h
 .data
     ;VARIAVEIS:
-    matriz db 20 dup(20 dup(0)) ;matriz principal
+    matriz db 10 dup(10 dup(0)) ;matriz principal
 
     Encouraçado db 1 ; 4 células consecutivas (1 linha e 4 colunas)
     Fragata db 1     ; 3 células consecutivas (1 linha e 3 colunas)
     Submarino db 2   ; 2 células consecutivas (1 linha e 2 colunas)
     Hidroaviao db 2  ; 4 células posicionadas (3 linhas e 2 colunas)
-    Torpedos db 33
     EmbarcacoesRestantes db 19 ; Total de partes de embarcações no jogo
 
     ;MENSAGENS:
@@ -18,11 +17,9 @@ TITLE Batalha Naval
     msg3 db 10,13,'Escolha um mapa para jogar (digite um numero entre 0 - 9): $'
     msg4 db 10,13,'Escollha uma posicao para atirar (linha): $'
     msg5 db 10,13,'Escollha uma posicao para atirar (coluna): $'
-    msg6 db 10,13,'Numero maximo de tiros: 33$'
-    msg7 db 10,13,'Numero de tiros dados: $'
-    msg8 db 10,13,'Acertou!$'
-    msg9 db 10,13,'Agua!$'
-    msg10 db 10,13,'Parabens! Voce destruiu todas as embarcacoes e venceu o jogo!$'
+    msg6 db 10,13,'Acertou!$'
+    msg7 db 10,13,'Agua!$'
+    msg8 db 10,13,'Parabens! Voce destruiu todas as embarcacoes e venceu o jogo!$'
 
     MatrizAmostra db '    0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19',10,13
                   db '0   . . . . . . . . . . . . . . . . . . . . . . . . .',10,13                
@@ -62,24 +59,7 @@ TITLE Batalha Naval
     INT 21H
     ENDM
 
-QTDTIROS MACRO
-    ; Exibe a mensagem do número de tiros restantes
-    MOV AH,09h
-    LEA DX, msg6
-    INT 21H
-
-    MOV AH,09h
-    LEA DX, msg7
-    INT 21H
-
-    MOV AH,02H
-    ADD DL,'0'
-    INT 21H
-
-    ENDM
-    
 .code
-
 
 main PROC
     LIMPA_TELA
@@ -224,7 +204,6 @@ tiros proc
     xor dx,dx
 comeco:
     PULA_LINHA
-    QTDTIROS
     push dx
 
 linha:
@@ -246,16 +225,16 @@ coluna:
 
 agua:
     mov ah, 09h
-    lea dx, msg8
+    lea dx, msg7
     int 21h
     jmp fim_tiro
 
 acertou:
     mov ah, 09h
-    lea dx, msg7
+    lea dx, msg6
     int 21h
     mov matriz[si], 0 ; Marca a posição como destruída
-   dec embarcacoesRestantes ; Decrementa o contador de partes de embarcações restantes
+    dec embarcacoesRestantes ; Decrementa o contador de partes de embarcações restantes
 
     ; Verifica se todas as embarcações foram destruídas
     cmp embarcacoesRestantes, 0
@@ -267,7 +246,7 @@ fim_tiro:
 
 vitoria:
     mov ah, 09h
-    lea dx, msg10
+    lea dx, msg8
     int 21h
     jmp fim
 
