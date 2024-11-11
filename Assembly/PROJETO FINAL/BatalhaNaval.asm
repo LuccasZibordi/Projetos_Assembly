@@ -8,7 +8,7 @@ TITLE Batalha Naval
     EmbarcacoesRestantes db 19 ; Total de partes de embarcações no jogo
 
     ;MENSAGENS:
-    msg db 10,13, 'BEM VINDO AO SIMULADOR DE BATALHA NAVAL!', 10,13, 'Desenvolvido por: Luccas Gomes Zibordi      RA: 24007138 ',10,13,10,13,'   Aperte <enter> para continuar!$'
+    msg db 10,13, 'BEM VINDO AO SIMULADOR DE BATALHA NAVAL!', 10,13, 'Desenvolvido por: Luccas Gomes Zibordi   RA: 24007138 ',10,13,10,13,' e Guilherme Balabanian Mascaretti   RA:24021378  Aperte <enter> para continuar!$'
     msg2 db 10,13,'Posicionando embarcacoes... ... ... ...$'
     msg3 db 10,13,'Escolha um mapa para jogar (digite um numero entre 0 - 5): $'
     msg4 db 10,13,'Escollha uma posicao para atirar (linha): $'
