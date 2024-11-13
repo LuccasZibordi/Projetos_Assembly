@@ -72,6 +72,10 @@ Uma aplicação de conhecimentos em uma matriz 4x4 que envolvem leitura impress�
 Laboratório 11- Menu de saida
 Um simples programa com um MENU interativo que possibilita o usuário digitar um número em decimal e reeber o mesmo número convertido em alguma base de sua escolha
 
+## TRABALHO FINAL
+
+O trabalho final consiste em um simulador de batalha naval que permite o usuário acessar posições de uma matriz 10x10 e realizar tiros para tentar destruir embarcações inimigas posicionadas pelo programa em diferentes padrões.
+
 ### Contatos
 
 Email: luccaszibordi@gmail.com

@@ -16,6 +16,7 @@ TITLE Batalha Naval
     msg6 db 10,13,'Acertou!$'
     msg7 db 10,13,'Agua!$'
     msg8 db 10,13,'Parabens! Voce destruiu todas as embarcacoes e venceu o jogo!$'
+    msg9 db 10,13,'Jogo encerrado, ate a proxima...'
 
     MatrizAmostra db '    0 1 2 3 4 5 6 7 8 9 ',10,13
                   db '0   . . . . . . . . . .',10,13                
@@ -88,103 +89,245 @@ selecionarMapa proc
     lea dx, msg3
     int 21h
 
-    ; Lê o valor do usuário
-    mov ah, 01h
-    int 21h
-    and al, 0fh ; Converte o valor digitado para número (0-9)
-    xor dh,dh
-    mov dl, al  ; Armazena o valor digitado em BL
+    call ler_posicao
+    xor dx,dx
+    mov dx,bx
     ret
 selecionarMapa endp
 
 addEmbarcacoes proc
     call selecionarMapa
 
-    mov ah,09H
-    lea dx, msg2
-    int 21H
+    mov bx,0
+    mov di,0
+    call addEncouracado
 
-; Preparação para posicionar o Encouraçado (1 linha e 4 colunas)
     mov bx,2
-    mov di,4
-    add bx,dx
-    add di,dx
-    mov cx, 4
-
-encouracado:
-    mov Matriz[bx][di],1
-    inc di
-    loop encouracado
-
-; Preparação para posicionar o Fragata (1 linha e 3 colunas)
-    mov bx,4
-    mov di,3
-    add bx,dx
-    add di,dx
-    mov cx, 3
-
-frag:
-    mov Matriz[bx][di],1
-    inc di
-    loop frag
-
-; Preparação para posiionar o Submarino (1 linha e 2 colunas)
-    mov bx,2
-    mov di,4
-    add bx,dx
-    add di,dx
-    mov cx, 2
-
-repete_sub:
-    push cx
-    mov cx,2
-
-subm:
-    mov Matriz[bx][di],1
-    inc di
-    loop subm
-
-verifica_repete:
-    pop cx
-
-segunda_rep:
-    sub bx,dx
-    sub di,dx
-
-    loop repete_sub
-
-; Preparação para posiionar o Hidroavião (3 linhas e 1 coluna)
-    mov bx,3
     mov di,2
-    add bx,dx
-    add di,dx
-    mov cx, 2
+    call addFragata
 
-repete_hidro:
-    push cx
-    mov cx,3
+    mov bx,5
+    mov di,0
+    call addSubmarino
+    Segundo_Submarino:
+    mov bx,7
+    mov di,3
+    call addSubmarino
 
-hidro_horizontal:
-    mov Matriz[bx][di],1
-    inc bx
-    loop hidro_horizontal
-
-hidro_vertical:
-    dec bx
-    inc di
-    mov Matriz[bx][di],1
-
-verifica_rep:
-    pop cx
-
-segunda_repet:
-    sub bx,dx
-    sub di,dx
-
-    loop repete_hidro 
+    mov bx,1
+    mov di,6
+    call addHidroaviao
+    Segundo_Hidroaviao:
+    mov bx,6
+    mov di,7
+    call addSegundoHidroaviao
 
     ret
 addEmbarcacoes endp
+
+addEncouracado proc
+    ; Posiciona o encouraçado (ocupa 4 colunas)
+    posiciona_peca_encouracado:
+        ; Escolher uma posição inicial aleatória 
+        add bx, dx ; Linha inicial
+        add di, dx ; Coluna inicial
+
+        ; Verificar se as 4 colunas estão livres e não encostadas em outras peças
+        mov si,di
+        mov cx, 4  ; O encouraçado ocupa 4 colunas
+    verifica_posicao_encouracado:
+        ; Verifica se a posição atual está livre
+        mov al, matriz[bx][si]
+        cmp al, 0
+        jne outra_posicao_encouracado
+
+        ; Incrementa a coluna e verifica a próxima
+        inc si
+        loop verifica_posicao_encouracado
+
+        ; Se todas as posições estiverem livres, posiciona o encouraçado
+        mov cx, 4
+    coloca_encouracado:
+        mov matriz[bx][di], 1
+        inc di
+        loop coloca_encouracado
+        jmp fim_encouracado
+    outra_posicao_encouracado:
+        dec bx
+
+    fim_encouracado:
+        ret
+addEncouracado endp
+addFragata proc
+    ; Posiciona o fragata (ocupa 3 colunas)
+    posiciona_peca_fragata:
+        ; Escolher uma posição inicial aleatória 
+        add bx, dx ; Linha inicial
+        add di, dx ; Coluna inicial
+
+        ; Verificar se as 3 colunas estão livres e não encostadas em outras peças
+        mov si,di
+        mov cx, 3  ; O fragata ocupa 3 colunas
+    verifica_posicao_fragata:
+        ; Verifica se a posição atual está livre
+        mov al, matriz[bx][si]
+        cmp al, 0
+        jne outra_posicao_fragata
+
+        ; Incrementa a coluna e verifica a próxima
+        inc si
+        loop verifica_posicao_fragata
+
+        ; Se todas as posições estiverem livres, posiciona o encouraçado
+        mov cx, 3
+    coloca_fragata:
+        mov matriz[bx][di], 1
+        inc di
+        loop coloca_fragata
+        jmp fim_fragata
+    outra_posicao_fragata:
+        dec bx
+    fim_fragata:
+        ret
+addFragata endp
+addSubmarino proc
+    ; Posiciona o submarino (ocupa 2 colunas)
+    posiciona_peca_submarino:
+        ; Escolher uma posição inicial aleatória (
+        sub bx, dx ; Linha inicial
+        add di, dx ; Coluna inicial
+
+        ; Verificar se as 2 colunas estão livres e não encostadas em outras peças
+        mov si,di
+        mov cx, 2  ; O submarino ocupa 2 colunas
+    verifica_posicao_submarino:
+        ; Verifica se a posição atual está livre
+        mov al, matriz[bx][si]
+        cmp al, 0
+        jne outra_posicao_submarino
+
+        ; Incrementa a coluna e verifica a próxima
+        inc si
+        loop verifica_posicao_submarino
+
+        ; Se todas as posições estiverem livres, posiciona o encouraçado
+        mov cx, 2
+    coloca_submarino:
+        mov matriz[bx][di], 1
+        inc di
+        loop coloca_submarino
+        jmp fim_submarino
+
+    outra_posicao_submarino:
+        ; Escolhe outra posição se houver sobreposição ou estiver encostado
+        dec bx
+    fim_submarino:
+        ret
+addSubmarino endp
+addHidroaviao proc
+    ; Posiciona o hidroaviao (ocupa 2 colunas e 3 linhas)
+    posiciona_peca_hidroaviao:
+        ; Escolher uma posição inicial aleatória
+        add bx, dx ; Linha inicial
+        sub di, dx ; Coluna inicial
+
+        ; Verificar se as 2 colunas estão livres e não encostadas em outras peças
+        mov si,di
+        mov cx, 2  ; O hidroaviao ocupa 2 colunas
+    verifica_coluna_hidroaviao:
+        ; Verifica se a posição atual está livre
+        mov al, matriz[bx][si]
+        cmp al, 0
+        jne outra_posicao_hidroaviao
+
+        ; Incrementa a coluna e verifica a próxima
+        inc si
+        loop verifica_coluna_hidroaviao
+
+        ; Verificar se as 3 linhas estão livres e não encostadas em outras peças
+        mov cx, 3  ; O hidroaviao ocupa 3 colunas
+    verifica_linha_hidroaviao:
+        ; Verifica se a posição atual está livre
+        mov al, matriz[bx][si]
+        cmp al, 0
+        jne outra_posicao_hidroaviao
+
+        ; Incrementa a coluna e verifica a próxima
+        inc bx
+        loop verifica_linha_hidroaviao
+
+        ; Se todas as posições estiverem livres, posiciona o encouraçado
+        mov cx,2
+    coloca_hidroaviao:
+        mov matriz[bx][di], 1
+        inc bx
+        loop coloca_hidroaviao
+        inc di
+        mov matriz[bx][di],1
+        dec di
+        inc bx
+        mov matriz[bx][di],1
+        jmp fim_hidroaviao
+
+    outra_posicao_hidroaviao:
+        dec bx
+
+    fim_hidroaviao:
+        ret
+addHidroaviao endp
+addSegundoHidroaviao proc
+    ; Posiciona o hidroaviao (ocupa 2 colunas e 3 linhas)
+    posiciona_peca_Segundo_hidroaviao:
+        ; Escolher uma posição inicial aleatória
+        sub bx, dx ; Linha inicial
+        sub di, dx ; Coluna inicial
+
+        ; Verificar se as 2 colunas estão livres e não encostadas em outras peças
+        mov si,di
+        mov cx, 2  ; O hidroaviao ocupa 2 colunas
+    verifica_coluna_Segundo_hidroaviao:
+        ; Verifica se a posição atual está livre
+        mov al, matriz[bx][si]
+        cmp al, 0
+        jne outra_posicao_Segundo_hidroaviao
+
+        ; Incrementa a coluna e verifica a próxima
+        inc si
+        loop verifica_coluna_Segundo_hidroaviao
+
+        ; Verificar se as 3 linhas estão livres e não encostadas em outras peças
+        mov cx, 3  ; O hidroaviao ocupa 3 colunas
+    verifica_linha_Segundo_hidroaviao:
+        ; Verifica se a posição atual está livre
+        mov al, matriz[bx][si]
+        cmp al, 0
+        jne outra_posicao_Segundo_hidroaviao
+
+        ; Incrementa a coluna e verifica a próxima
+        inc bx
+        loop verifica_linha_Segundo_hidroaviao
+
+        ; Se todas as posições estiverem livres, posiciona o encouraçado
+        mov cx,2
+    coloca_Segundo_hidroaviao:
+        mov matriz[bx][di], 1
+        inc bx
+        loop coloca_Segundo_hidroaviao
+        inc di
+        mov matriz[bx][di],1
+        dec di
+        inc bx
+        mov matriz[bx][di],1
+
+        jmp fim_Segundo_hidroaviao
+
+    outra_posicao_Segundo_hidroaviao:
+        dec bx
+
+    fim_Segundo_hidroaviao:
+        ret
+addSegundoHidroaviao endp
+
 
 tiros proc
     xor dx,dx
@@ -197,7 +340,6 @@ linha:
     lea dx, msg4
     int 21h
     call ler_posicao
-    
 
 coluna:
     mov ah,09H
@@ -230,6 +372,13 @@ fim_tiro:
     jmp comeco
     ret
 
+pausa_jogo:
+    LIMPA_TELA
+    mov ah, 09h
+    lea dx, msg9
+    int 21h
+    jmp fim
+
 vitoria:
     LIMPA_TELA
     mov ah, 09h
@@ -242,7 +391,10 @@ tiros endp
 ler_posicao proc
     ; Lê o primeiro dígito (dezena)
     MOV AH, 01h
-    INT 21h
+    int 21h
+    ; Verifica se o usuário pressionou 'p' para pausar
+    cmp al, 'p'
+    je pausa_jogo
     AND AL,0FH  ; Converter ASCII para numérico
     xor ah,ah
     mov bx,ax
