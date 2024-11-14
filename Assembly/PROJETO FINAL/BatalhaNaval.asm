@@ -16,7 +16,7 @@ TITLE Batalha Naval
     msg6 db 10,13,'Acertou!$'
     msg7 db 10,13,'Agua!$'
     msg8 db 10,13,'Parabens! Voce destruiu todas as embarcacoes e venceu o jogo!$'
-    msg9 db 10,13,'Jogo encerrado, ate a proxima...'
+    msg9 db 10,13,'Jogo encerrado, ate a proxima...$'
 
     MatrizAmostra db '    0 1 2 3 4 5 6 7 8 9 ',10,13
                   db '0   . . . . . . . . . .',10,13                
@@ -70,6 +70,10 @@ call addEmbarcacoes
 call tiros
 
 fim:
+LIMPA_TELA
+mov ah, 09h
+lea dx, msg9
+int 21h
 mov ah,4ch
 int 21h
 
@@ -374,9 +378,6 @@ fim_tiro:
 
 pausa_jogo:
     LIMPA_TELA
-    mov ah, 09h
-    lea dx, msg9
-    int 21h
     jmp fim
 
 vitoria:
