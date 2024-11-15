@@ -33,7 +33,7 @@ TITLE Batalha Naval
     ;MACROS:
     LIMPA_TELA MACRO
     MOV AH, 0 
-    MOV AL, 3 
+    MOV AL, 3           ; Limpa a tela do programa
     INT 10H
     ENDM
 
@@ -41,7 +41,7 @@ TITLE Batalha Naval
     MOV AH,02H
     MOV DL,10
     INT 21H
-    MOV AH,02H
+    MOV AH,02H         ; Imprime 10,13 para encerrar uma linha e pular para a outra
     MOV DL,13
     INT 21H
     ENDM
@@ -51,28 +51,28 @@ TITLE Batalha Naval
 main PROC
     LIMPA_TELA
     
-    mov ax,@data
+    mov ax,@data       ;Inicializa o segmento de dados
     mov ds,ax
 
     mov ah,09h
-    lea dx, msg
+    lea dx, msg        ; Imprime o Menu do jogo com uma tela de boas vindas e os desenvolvedores
     int 21h
 
     mov ah,01h
-    int 21h
+    int 21h            ; Lê um caractere do teclado e compara com o 'CR' para iniciar o jogo
     cmp al,13
     je inicio
 
 inicio:
 LIMPA_TELA
 call mostrarMatriz
-call addEmbarcacoes
+call addEmbarcacoes     ; Chamada dos procedimentos para começar o jogo 
 call tiros
 
 fim:
 LIMPA_TELA
 mov ah, 09h
-lea dx, msg9
+lea dx, msg9        ; Finalização do Jogo com uma mensagem de despedida
 int 21h
 mov ah,4ch
 int 21h
@@ -81,7 +81,7 @@ main ENDP
 
 mostrarMatriz proc
 mov ah,09H
-lea dx,MatrizAmostra
+lea dx,MatrizAmostra        ; Procedimento para mostrar uma matriz de exemplo para o usuário
 int 21H
 ret
 mostrarMatriz endp
@@ -93,17 +93,17 @@ selecionarMapa proc
     lea dx, msg3
     int 21h
 
-    call ler_posicao
-    xor dx,dx
+    call ler_posicao    ; chama um procedimento para ler uma posição do usuário
+    xor dx,dx           ; zera dx para salvar o número digitado pelo usuário em dx
     mov dx,bx
-    ret
+    ret                 ; retorna e encerra o procedimento
 selecionarMapa endp
 
 addEmbarcacoes proc
-    call selecionarMapa
+    call selecionarMapa        ; chama o procedimento de seleção de mapas
 
     mov bx,0
-    mov di,0
+    mov di,0                    ; Posições iniciais do Encouraçado
     call addEncouracado
 
     mov bx,2
