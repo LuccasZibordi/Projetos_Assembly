@@ -383,7 +383,7 @@ pausa_jogo:
 vitoria:
     LIMPA_TELA
     mov ah, 09h
-    lea dx, msg8        ; imprime a mensagem de vitória
+    lea dx, msg8
     int 21h
     jmp fim
 
