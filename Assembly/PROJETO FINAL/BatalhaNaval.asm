@@ -104,27 +104,27 @@ addEmbarcacoes proc
 
     mov bx,0
     mov di,0                    ; Posições iniciais do Encouraçado
-    call addEncouracado
+    call addEncouracado         ; chama o procedimento que posiciona o Encouraçado
 
     mov bx,2
-    mov di,2
-    call addFragata
+    mov di,2                    ; Posições iniciais do Fragata
+    call addFragata             ; chama o procedimento que posiciona o Fragata
 
     mov bx,5
-    mov di,0
-    call addSubmarino
+    mov di,0                    ; Posições iniciais do primeiro submarino
+    call addSubmarino           ; chama o procedimento que posiciona o primeiro submarino
     Segundo_Submarino:
     mov bx,7
-    mov di,3
-    call addSubmarino
+    mov di,3                    ; Posições inicias do segundo submarino
+    call addSubmarino           ; chama o procedimento que posiciona o segundo submarino
 
     mov bx,1
-    mov di,6
-    call addHidroaviao
+    mov di,6                    ; Posições iniciais do primeiro Hidroaviâo
+    call addHidroaviao          ; Chama o procedimento que posiciona o primeiro Hidroavião
     Segundo_Hidroaviao:
-    mov bx,6
-    mov di,7
-    call addSegundoHidroaviao
+    mov bx,6            
+    mov di,7                    ; Posições iniciais do segundo Hidroavião
+    call addSegundoHidroaviao   ; Chama o procedimento que posiciona o segundo Hidroavião
 
     ret
 addEmbarcacoes endp
@@ -151,13 +151,13 @@ addEncouracado proc
 
         ; Se todas as posições estiverem livres, posiciona o encouraçado
         mov cx, 4
-    coloca_encouracado:
-        mov matriz[bx][di], 1
-        inc di
+    coloca_encouracado: 
+        mov matriz[bx][di], 1       ; Move o número 1 para a posição da matriz Linha BX e coluna DX
+        inc di  
         loop coloca_encouracado
         jmp fim_encouracado
     outra_posicao_encouracado:
-        dec bx
+        dec bx                      ; caso a posição esteja ocupada então ele volta uma linha
 
     fim_encouracado:
         ret
@@ -383,7 +383,7 @@ pausa_jogo:
 vitoria:
     LIMPA_TELA
     mov ah, 09h
-    lea dx, msg8
+    lea dx, msg8        ; imprime a mensagem de vitória
     int 21h
     jmp fim
 
@@ -397,8 +397,8 @@ ler_posicao proc
     cmp al, 'p'
     je pausa_jogo
     AND AL,0FH  ; Converter ASCII para numérico
-    xor ah,ah
-    mov bx,ax
+    xor ah,ah   ; zera ah para ax ser o número digitado pelo usuário
+    mov bx,ax   ; move para bx a posição digitada pelo jogador
     ret
 ler_posicao endp
 
