@@ -1,4 +1,4 @@
-## BitCraft -> Assembly Intel x86
+## Assembly Intel x86
 
 # Descrição
 
