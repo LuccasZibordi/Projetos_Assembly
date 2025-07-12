@@ -3,10 +3,10 @@ TITLE saidas2.asm
 .STACK 100H
 .DATA
     msg  DB "Insira o numero que sera convertido: $"
-    msg2 DB 10,13,"Em qual base sera convertida: Binário(2), Octal(8) ou Hexadecimal(16)? $"
+    msg2 DB 10,13,"Em qual base sera convertida: Binario(2), Octal(8) ou Hexadecimal(16)? $"
     msgHexa DB 10,13, "BASE Hexadecimal: $"
     msgOcta DB 10,13, "BASE Octal: $"
-    msgBin  DB 10,13, "BASE binária: $"
+    msgBin  DB 10,13, "BASE binaria: $"
 .CODE
 main PROC
              MOV  AX,@DATA  ;inicia o segmento de dados
